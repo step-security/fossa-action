@@ -1,5 +1,9 @@
 import { error, setFailed, setOutput } from '@actions/core';
 import { exec, ExecListeners } from '@actions/exec';
+import fs from 'fs';
+import * as core from '@actions/core';
+import axios, {isAxiosError} from 'axios';
+import { fetchFossaCli } from './download-cli.js';
 import {
   CONTAINER,
   FOSSA_API_KEY,
@@ -15,18 +19,14 @@ import {
   REPORT_FORMAT,
   WORKING_DIRECTORY,
 } from './config.js';
-import { fetchFossaCli } from './download-cli.js';
-import fs from 'fs';
-import * as core from '@actions/core';
-import axios, {isAxiosError} from 'axios'
 
 async function validateSubscription() {
-  const eventPath = process.env.GITHUB_EVENT_PATH
-  let repoPrivate: boolean | undefined
+  const eventPath = process.env.GITHUB_EVENT_PATH;
+  let repoPrivate: boolean | undefined;
 
   if (eventPath && fs.existsSync(eventPath)) {
-    const eventData = JSON.parse(fs.readFileSync(eventPath, 'utf8'))
-    repoPrivate = eventData?.repository?.private
+    const eventData = JSON.parse(fs.readFileSync(eventPath, 'utf8'));
+    repoPrivate = eventData?.repository?.private;
   }
 
   const upstream = 'fossas/fossa-action';
@@ -48,10 +48,11 @@ async function validateSubscription() {
   try {
     await axios.post(
       `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/maintained-actions-subscription`,
-      body, { timeout: 3000 }
+      body,
+      { timeout: 3000 }
     );
-  } catch (error) {
-    if (isAxiosError(error) && error.response?.status === 403) {
+  } catch (err) {
+    if (isAxiosError(err) && err.response?.status === 403) {
       core.error(`\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`);
       core.error(`\u001b[31mLearn how to enable a subscription: ${docsUrl}\u001b[0m`);
       process.exit(1);
