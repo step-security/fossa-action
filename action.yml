@@ -1,0 +1,75 @@
+name: FOSSA Action
+description: Find license compliance and security issues in your applications with FOSSA
+author: 'step-security'
+
+inputs:
+  api-key:
+    description: >-
+      Your FOSSA API key.
+    required: true
+  pinned-cli-version:
+    description: >-
+      If set, use the specified FOSSA Cli version.
+    required: false
+  run-tests:
+    description: >-
+      If set to `true` FOSSA will run the `fossa test` command.
+    default: false
+  container:
+    description: >-
+      A container name or OCI image path.  Set to use FOSSA's container scanning functionality. This will run `fossa container analyze` (default behavior) and `fossa container test` (if used in combination with `run-tests`).
+    required: false
+  endpoint:
+    description: >-
+      Endpoint passed to FOSSA CLI. Defaults to `app.fossa.com`.
+    required: false
+  branch:
+    description: >-
+      Override the detected FOSSA project branch. If running FOSSA analysis on a
+      Pull Request, as a start you can use the contexts `github.ref` or `github.ref_name`.
+    required: false
+  project:
+    description: >-
+      Override the detected FOSSA project name. If running FOSSA analysis on a
+      Pull Request, as a start you can use the contexts `github.ref` or `github.ref_name`.
+    required: false
+  team:
+    description: >-
+      Allows you to specify the team for your project. It uses the team name, just as `--team` in the CLI. This will only work when creating a project.
+    required: false
+  policy:
+    description: >-
+      Allows you to specify the policy for your project. It uses the policy name, just as `--policy` in the CLI. This will only work when creating a project.
+  debug:
+    description: >-
+      Run all FOSSA commands in debug mode. Running `fossa analyze` in debug
+      mode will generate a debug bundle that can be uploaded as a build artifact
+      after this action completes.
+    default: false
+  test-diff-revision:
+    description: >-
+      Run fossa test with the `--diff <revision>` option, which checks if there are new issues relative to `<revision>`.
+      Requires `run-tests` to be set in order to take effect.
+    required: false
+  generate-report:
+    description: >-
+      If set, after analyzing your project, FOSSA will generate a report which is accessible from the `report` step output.
+      The value must be a [report format](https://github.com/fossas/fossa-cli/blob/master/docs/references/subcommands/report.md#specifying-a-report-format).
+      Currently only the attribution report is supported.
+    required: false
+  working-directory:
+    description: >-
+      The directory to analyze
+    required: false
+
+outputs:
+  report:
+    description: If `generate-report` is provided, this will contain the string contents of the report in the requested format.
+
+runs:
+  using: node24
+  main: dist/index.js
+
+branding:
+  icon: 'check-circle'
+  color: 'green'

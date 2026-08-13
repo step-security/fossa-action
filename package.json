@@ -1,0 +1,38 @@
+{
+  "name": "fossa-action",
+  "description": "Find license compliance and security issues in your applications with FOSSA",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "build": "ncc build src/index.ts -o dist --source-map --license LICENSE --minify"
+  },
+  "packageManager": "yarn@4.13.0",
+  "engines": {
+    "node": ">= 24.0.0"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@actions/exec": "^3.0.0",
+    "@actions/tool-cache": "^4.0.0",
+    "axios": "^1.19.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^2.1.0",
+    "@eslint/eslintrc": "^3.3.6",
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.13.3",
+    "@typescript-eslint/eslint-plugin": "^8.63.0",
+    "@typescript-eslint/parser": "^8.63.0",
+    "@vercel/ncc": "^0.44",
+    "eslint": "^10.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^17.23.1",
+    "eslint-plugin-promise": "^7.3.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "globals": "^17.9.0",
+    "typescript": "^5.9.3"
+  }
+}
