@@ -141,7 +141,7 @@ jobs:
 
 ### `endpoint`
 
-**Optional** Endpoint passed to FOSSA CLI. Defaults to `app.fossa.com`. [Read more](https://github.com/fossas/spectrometer/blob/master/docs/userguide.md#common-fossa-project-flags).
+**Optional** Endpoint passed to FOSSA CLI. Defaults to `app.fossa.com`.
 
 Example
 ```yml
