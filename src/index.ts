@@ -196,6 +196,10 @@ export async function report(): Promise<void> {
 
 async function run() {
   await validateSubscription();
+  if (!FOSSA_API_KEY) {
+    setFailed('Input required and not supplied: api-key');
+    return;
+  }
   try {
     await fetchFossaCli();
   } catch (e) {
